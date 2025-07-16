@@ -21,31 +21,40 @@ export default function AddSweet() {
     const handleSubmit = async e => {
         e.preventDefault();
         try {
-            await addSweet(formData);
-            toast.success("Sweet added successfully! 🎉", {
+            const res = await addSweet(formData);
+            const backendMsg = res?.data?.message;
+            if (backendMsg) {
+                toast.success(backendMsg, {
+                    style: {
+                        borderRadius: '12px',
+                        background: '#18181b',
+                        color: '#fff',
+                        fontWeight: 'bold',
+                        fontSize: '1.1rem',
+                        boxShadow: '0 4px 24px 0 #22c55e'
+                    },
+                    iconTheme: {
+                        primary: '#22c55e',
+                        secondary: '#18181b',
+                    },
+                });
+            }
+            setTimeout(() => navigate("/"), 1500);
+        } catch (err) {
+            const backendMsg = err.response?.data?.message || "Failed to add sweet.";
+            setError(backendMsg);
+            toast.error(backendMsg, {
                 style: {
                     borderRadius: '12px',
-                    background: '#18181b',
+                    background: '#f87171',
                     color: '#fff',
                     fontWeight: 'bold',
                     fontSize: '1.1rem',
-                    boxShadow: '0 4px 24px 0 #22c55e'
+                    boxShadow: '0 4px 24px 0 #dc2626'
                 },
                 iconTheme: {
-                    primary: '#22c55e',
-                    secondary: '#18181b',
-                },
-            });
-            setTimeout(() => navigate("/"), 1500);
-        } catch (err) {
-            setError("Failed to add sweet. Please check your inputs.");
-            toast.error("Failed to add sweet. Please check your inputs.", {
-                style: {
-                    borderRadius: '12px',
-                    background: '#fff1f2',
-                    color: '#16a34a',
-                    fontWeight: 'bold',
-                    fontSize: '1.1rem',
+                    primary: '#dc2626',
+                    secondary: '#f87171',
                 },
             });
         }
@@ -62,24 +71,23 @@ export default function AddSweet() {
                 {error && <p className="text-green-600 mb-4 font-semibold">{error}</p>}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="relative group">
+                    <div>
+                        <label htmlFor="sweet-name" className="block text-green-600 font-semibold mb-1">
+                            Sweet Name
+                        </label>
                         <input
                             type="text"
                             name="name"
-                            placeholder=" "
                             value={formData.name}
                             onChange={handleChange}
-                            className="w-full border-2 border-green-300 focus:border-green-500 px-4 py-3 rounded-xl bg-transparent transition-all duration-300 outline-none peer"
+                            className="w-full border-2 border-green-300 focus:border-green-500 px-4 py-3 rounded-xl bg-white transition-all duration-300 outline-none"
                             required
                             id="sweet-name"
                             autoComplete="off"
                         />
-                        <label htmlFor="sweet-name" className="absolute left-4 top-3 text-green-500 bg-white px-1 transition-all duration-200 pointer-events-none peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-4 peer-focus:text-xs peer-focus:text-green-600">
-                            Sweet Name
-                        </label>
                     </div>
 
-                    <div className="mb-2">
+                    <div>
                         <label className="block text-green-600 font-semibold mb-1" htmlFor="category">
                             Category
                         </label>
@@ -88,7 +96,7 @@ export default function AddSweet() {
                             name="category"
                             value={formData.category}
                             onChange={handleChange}
-                            className="w-full border-2 border-green-300 focus:border-green-500 px-4 py-3 rounded-xl bg-transparent transition-all duration-300 outline-none"
+                            className="w-full border-2 border-green-300 focus:border-green-500 px-4 py-3 rounded-xl bg-white transition-all duration-300 outline-none"
                         >
                             <option value="Chocolate">Chocolate</option>
                             <option value="Candy">Candy</option>
@@ -99,37 +107,35 @@ export default function AddSweet() {
                     </div>
 
                     <div className="flex gap-4">
-                        <div className="relative flex-1 group">
+                        <div className="flex-1">
+                            <label htmlFor="sweet-price" className="block text-green-600 font-semibold mb-1">
+                                Price (₹)
+                            </label>
                             <input
                                 type="number"
                                 name="price"
-                                placeholder=" "
                                 value={formData.price}
                                 onChange={handleChange}
-                                className="w-full border-2 border-green-300 focus:border-green-500 px-4 py-3 rounded-xl bg-transparent transition-all duration-300 outline-none peer"
+                                className="w-full border-2 border-green-300 focus:border-green-500 px-4 py-3 rounded-xl bg-white transition-all duration-300 outline-none"
                                 required
                                 id="sweet-price"
                                 autoComplete="off"
                             />
-                            <label htmlFor="sweet-price" className="absolute left-4 top-3 text-green-500 bg-white px-1 transition-all duration-200 pointer-events-none peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-4 peer-focus:text-xs peer-focus:text-green-600">
-                                Price (₹)
-                            </label>
                         </div>
-                        <div className="relative flex-1 group">
+                        <div className="flex-1">
+                            <label htmlFor="sweet-quantity" className="block text-green-600 font-semibold mb-1">
+                                Quantity
+                            </label>
                             <input
                                 type="number"
                                 name="quantity"
-                                placeholder=" "
                                 value={formData.quantity}
                                 onChange={handleChange}
-                                className="w-full border-2 border-green-300 focus:border-green-500 px-4 py-3 rounded-xl bg-transparent transition-all duration-300 outline-none peer"
+                                className="w-full border-2 border-green-300 focus:border-green-500 px-4 py-3 rounded-xl bg-white transition-all duration-300 outline-none"
                                 required
                                 id="sweet-quantity"
                                 autoComplete="off"
                             />
-                            <label htmlFor="sweet-quantity" className="absolute left-4 top-3 text-green-500 bg-white px-1 transition-all duration-200 pointer-events-none peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-4 peer-focus:text-xs peer-focus:text-green-600">
-                                Quantity
-                            </label>
                         </div>
                     </div>
 

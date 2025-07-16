@@ -41,25 +41,29 @@ export default function RestockSweet() {
         }
 
         try {
-            await restockSweet(id, restockAmount);
-            toast.success("Restocked successfully! 🎉", {
-                style: {
-                    borderRadius: '12px',
-                    background: '#18181b',
-                    color: '#fff',
-                    fontWeight: 'bold',
-                    fontSize: '1.1rem',
-                    boxShadow: '0 4px 24px 0 #a21caf'
-                },
-                iconTheme: {
-                    primary: '#a21caf',
-                    secondary: '#18181b',
-                },
-            });
+            const res = await restockSweet(id, restockAmount);
+            const backendMsg = res?.data?.message;
+            if (backendMsg) {
+                toast.success(backendMsg, {
+                    style: {
+                        borderRadius: '12px',
+                        background: '#18181b',
+                        color: '#fff',
+                        fontWeight: 'bold',
+                        fontSize: '1.1rem',
+                        boxShadow: '0 4px 24px 0 #a21caf'
+                    },
+                    iconTheme: {
+                        primary: '#a21caf',
+                        secondary: '#18181b',
+                    },
+                });
+            }
             setTimeout(() => navigate("/"), 1500);
         } catch (err) {
-            setError("Failed to restock. Try again.");
-            toast.error("Failed to restock. Try again.", {
+            const backendMsg = err?.response?.data?.message || "Failed to restock. Try again.";
+            setError(backendMsg);
+            toast.error(backendMsg, {
                 style: {
                     borderRadius: '12px',
                     background: '#fff1f2',
@@ -93,20 +97,20 @@ export default function RestockSweet() {
                 </div>
 
                 <form onSubmit={handleRestock} className="space-y-6">
-                    <div className="relative group">
+                    <div>
+                        <label htmlFor="restock-amount" className="block text-purple-600 font-semibold mb-1">
+                            Quantity to Restock
+                        </label>
                         <input
                             type="number"
                             min="1"
                             value={restockAmount}
                             onChange={e => setRestockAmount(Number(e.target.value))}
-                            className="w-full border-2 border-purple-300 focus:border-purple-500 px-4 py-3 rounded-xl bg-transparent transition-all duration-300 outline-none peer"
+                            className="w-full border-2 border-purple-300 focus:border-purple-500 px-4 py-3 rounded-xl bg-white transition-all duration-300 outline-none"
                             required
                             id="restock-amount"
                             autoComplete="off"
                         />
-                        <label htmlFor="restock-amount" className="absolute left-4 top-3 text-purple-500 bg-white px-1 transition-all duration-200 pointer-events-none peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-4 peer-focus:text-xs peer-focus:text-purple-600">
-                            Quantity to Restock
-                        </label>
                     </div>
 
                     <button

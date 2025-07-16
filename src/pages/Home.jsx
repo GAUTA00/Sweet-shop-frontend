@@ -4,10 +4,12 @@ import { fetchAllSweets, searchSweets } from "../api/sweets";
 import SweetCard from "../components/SweetCards";
 import Navbar from "../components/Navbar";
 import SearchBar from "../components/SearchCommand";
+import toast from "react-hot-toast";
 
 export default function Home() {
     const [sweets, setSweets] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
     const [searchParams] = useSearchParams();
 
     useEffect(() => {
@@ -15,6 +17,7 @@ export default function Home() {
 
         const fetchData = async () => {
             setLoading(true);
+            setError("");
             try {
                 if (Object.keys(queryParams).length > 0) {
                     const res = await searchSweets(queryParams);
@@ -24,7 +27,17 @@ export default function Home() {
                     setSweets(res.data);
                 }
             } catch (err) {
-                console.error("Error fetching sweets", err);
+                const backendMsg = err?.response?.data?.message || "Error fetching sweets";
+                setError(backendMsg);
+                toast.error(backendMsg, {
+                    style: {
+                        borderRadius: '12px',
+                        background: '#fff1f2',
+                        color: '#b91c1c',
+                        fontWeight: 'bold',
+                        fontSize: '1.1rem',
+                    },
+                });
             } finally {
                 setLoading(false);
             }
@@ -45,6 +58,8 @@ export default function Home() {
 
                 {loading ? (
                     <p className="text-gray-500">Loading sweets...</p>
+                ) : error ? (
+                    <p className="text-red-500">{error}</p>
                 ) : sweets.length === 0 ? (
                     <p className="text-gray-500">No sweets found.</p>
                 ) : (

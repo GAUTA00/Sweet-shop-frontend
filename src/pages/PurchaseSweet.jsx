@@ -41,25 +41,29 @@ export default function PurchaseSweet() {
         }
 
         try {
-            await purchaseSweet(id, quantity);
-            toast.success("Purchase successful! 🎉", {
-                style: {
-                    borderRadius: '12px',
-                    background: '#18181b',
-                    color: '#fff',
-                    fontWeight: 'bold',
-                    fontSize: '1.1rem',
-                    boxShadow: '0 4px 24px 0 #3b82f6'
-                },
-                iconTheme: {
-                    primary: '#3b82f6',
-                    secondary: '#18181b',
-                },
-            });
+            const res = await purchaseSweet(id, quantity);
+            const backendMsg = res?.data?.message;
+            if (backendMsg) {
+                toast.success(backendMsg, {
+                    style: {
+                        borderRadius: '12px',
+                        background: '#18181b',
+                        color: '#fff',
+                        fontWeight: 'bold',
+                        fontSize: '1.1rem',
+                        boxShadow: '0 4px 24px 0 #3b82f6'
+                    },
+                    iconTheme: {
+                        primary: '#3b82f6',
+                        secondary: '#18181b',
+                    },
+                });
+            }
             setTimeout(() => navigate("/"), 1500);
         } catch (err) {
-            setError("Purchase failed. Try again.");
-            toast.error("Purchase failed. Try again.", {
+            const backendMsg = err?.response?.data?.message || "Purchase failed. Try again.";
+            setError(backendMsg);
+            toast.error(backendMsg, {
                 style: {
                     borderRadius: '12px',
                     background: '#fff1f2',
@@ -93,21 +97,21 @@ export default function PurchaseSweet() {
                 </div>
 
                 <form onSubmit={handlePurchase} className="space-y-6">
-                    <div className="relative group">
+                    <div>
+                        <label htmlFor="purchase-quantity" className="block text-blue-600 font-semibold mb-1">
+                            Quantity to Purchase
+                        </label>
                         <input
                             type="number"
                             min="1"
                             max={sweet.quantity}
                             value={quantity}
                             onChange={e => setQuantity(Number(e.target.value))}
-                            className="w-full border-2 border-blue-300 focus:border-blue-500 px-4 py-3 rounded-xl bg-transparent transition-all duration-300 outline-none peer"
+                            className="w-full border-2 border-blue-300 focus:border-blue-500 px-4 py-3 rounded-xl bg-white transition-all duration-300 outline-none"
                             required
                             id="purchase-quantity"
                             autoComplete="off"
                         />
-                        <label htmlFor="purchase-quantity" className="absolute left-4 top-3 text-blue-500 bg-white px-1 transition-all duration-200 pointer-events-none peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-4 peer-focus:text-xs peer-focus:text-blue-600">
-                            Quantity to Purchase
-                        </label>
                     </div>
 
                     <button
