@@ -17,6 +17,9 @@ export default function SweetCard({ sweet }) {
                 <Link to={`/restockSweet/${sweet._id}`} className="px-3 py-1 bg-purple-600 text-white rounded text-sm">
                     Restock
                 </Link>
+                <Link to={`/deleteSweet/${sweet._id}`} className="px-3 py-1 bg-red-500 text-white rounded text-sm">
+                    Delete
+                </Link>
             </div>
         </div>
     );
