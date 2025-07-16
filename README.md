@@ -75,10 +75,10 @@ PUT     /api/v1/restockSweet/:id
 GET     /api/v1/searchSweets?name=&category=&sortBy=price&order=asc
 
 📸 UI Preview
-![alt text](1.png)
-![alt text](2.png)
-![alt text](3.png)
-![alt text](4.png)
+![alt text](/1.png)
+![alt text](/2.png)
+![alt text](/3.png)
+![alt text](/4.png)
 
 👨‍💻 Author
 Gautam Prajapati
