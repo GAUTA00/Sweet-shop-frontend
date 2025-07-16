@@ -76,10 +76,10 @@ GET     /api/v1/searchSweets?name=&category=&sortBy=price&order=asc
 
 📸 UI Preview
 ## 📸 UI Preview
-![Home Page](public/1.png)
-![Add Sweet Page](public/2.png)
-![Edit Sweet Page](public/3.png)
-![Delete Sweet Page](public/4.png)
+![Home Page](screenshots/1.png)
+![Add Sweet Page](screenshots/2.png)
+![Edit Sweet Page](screenshots/3.png)
+![Delete Sweet Page](screenshots/4.png)
 
 👨‍💻 Author
 Gautam Prajapati
