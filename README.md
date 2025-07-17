@@ -2,7 +2,7 @@
 
 A responsive and modern frontend application for managing sweets inventory — built with **React** and **Tailwind CSS**.
 
-> 🔗 Live Demo (optional): [Add link here after deployment]
+> 🔗 Live Demo: [https://sweet-shop-frontend-nine.vercel.app/]
 
 ---
 
