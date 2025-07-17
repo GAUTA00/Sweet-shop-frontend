@@ -7,6 +7,7 @@ export default function AddSweet() {
     const [formData, setFormData] = useState({
         name: "",
         category: "Chocolate",
+        customCategory: "",
         price: "",
         quantity: ""
     });
@@ -20,42 +21,58 @@ export default function AddSweet() {
 
     const handleSubmit = async e => {
         e.preventDefault();
+
+        const finalCategory =
+            formData.category === "Other"
+                ? formData.customCategory.trim()
+                : formData.category;
+
+        if (formData.category === "Other" && !finalCategory) {
+            setError("Please provide a custom category name.");
+            return;
+        }
+
         try {
-            const res = await addSweet(formData);
+            const res = await addSweet({
+                ...formData,
+                category: finalCategory,
+            });
+
             const backendMsg = res?.data?.message;
             if (backendMsg) {
                 toast.success(backendMsg, {
                     style: {
-                        borderRadius: '12px',
-                        background: '#18181b',
-                        color: '#fff',
-                        fontWeight: 'bold',
-                        fontSize: '1.1rem',
-                        boxShadow: '0 4px 24px 0 #22c55e'
+                        borderRadius: "12px",
+                        background: "#18181b",
+                        color: "#fff",
+                        fontWeight: "bold",
+                        fontSize: "1.1rem",
+                        boxShadow: "0 4px 24px 0 #22c55e"
                     },
                     iconTheme: {
-                        primary: '#22c55e',
-                        secondary: '#18181b',
-                    },
+                        primary: "#22c55e",
+                        secondary: "#18181b"
+                    }
                 });
             }
+
             setTimeout(() => navigate("/"), 1500);
         } catch (err) {
             const backendMsg = err.response?.data?.message || "Failed to add sweet.";
             setError(backendMsg);
             toast.error(backendMsg, {
                 style: {
-                    borderRadius: '12px',
-                    background: '#f87171',
-                    color: '#fff',
-                    fontWeight: 'bold',
-                    fontSize: '1.1rem',
-                    boxShadow: '0 4px 24px 0 #dc2626'
+                    borderRadius: "12px",
+                    background: "#f87171",
+                    color: "#fff",
+                    fontWeight: "bold",
+                    fontSize: "1.1rem",
+                    boxShadow: "0 4px 24px 0 #dc2626"
                 },
                 iconTheme: {
-                    primary: '#dc2626',
-                    secondary: '#f87171',
-                },
+                    primary: "#dc2626",
+                    secondary: "#f87171"
+                }
             });
         }
     };
@@ -68,7 +85,9 @@ export default function AddSweet() {
                     <span className="animate-bounce">➕</span> Add New Sweet
                 </h1>
 
-                {error && <p className="text-green-600 mb-4 font-semibold">{error}</p>}
+                {error && (
+                    <p className="text-green-600 mb-4 font-semibold">{error}</p>
+                )}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
@@ -88,7 +107,7 @@ export default function AddSweet() {
                     </div>
 
                     <div>
-                        <label className="block text-green-600 font-semibold mb-1" htmlFor="category">
+                        <label htmlFor="category" className="block text-green-600 font-semibold mb-1">
                             Category
                         </label>
                         <select
@@ -103,8 +122,28 @@ export default function AddSweet() {
                             <option value="Pastry">Pastry</option>
                             <option value="Milk-Based">Milk-Based</option>
                             <option value="Nut-Based">Nut-Based</option>
+                            <option value="Other">Other</option>
                         </select>
                     </div>
+
+                    {formData.category === "Other" && (
+                        <div>
+                            <label htmlFor="customCategory" className="block text-green-600 font-semibold mb-1">
+                                Custom Category
+                            </label>
+                            <input
+                                type="text"
+                                name="customCategory"
+                                value={formData.customCategory}
+                                onChange={handleChange}
+                                className="w-full border-2 border-green-300 focus:border-green-500 px-4 py-3 rounded-xl bg-white transition-all duration-300 outline-none"
+                                required
+                                id="customCategory"
+                                autoComplete="off"
+                                placeholder="Enter custom category"
+                            />
+                        </div>
+                    )}
 
                     <div className="flex gap-4">
                         <div className="flex-1">
@@ -122,6 +161,7 @@ export default function AddSweet() {
                                 autoComplete="off"
                             />
                         </div>
+
                         <div className="flex-1">
                             <label htmlFor="sweet-quantity" className="block text-green-600 font-semibold mb-1">
                                 Quantity
@@ -143,20 +183,23 @@ export default function AddSweet() {
                         type="submit"
                         className="w-full bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:from-green-500 hover:to-green-800 text-white font-bold py-3 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200 tracking-wide text-lg flex items-center justify-center gap-2"
                     >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" /></svg>
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path d="M12 4v16m8-8H4" />
+                        </svg>
                         Add Sweet
                     </button>
                 </form>
             </div>
+
             <style>
                 {`
-                .animate-fade-in {
-                    animation: fadeIn 1.2s cubic-bezier(0.4,0,0.2,1) both;
-                }
-                @keyframes fadeIn {
-                    0% { opacity: 0; transform: translateY(40px) scale(0.98);}
-                    100% { opacity: 1; transform: translateY(0) scale(1);}
-                }
+                    .animate-fade-in {
+                        animation: fadeIn 1.2s cubic-bezier(0.4,0,0.2,1) both;
+                    }
+                    @keyframes fadeIn {
+                        0% { opacity: 0; transform: translateY(40px) scale(0.98); }
+                        100% { opacity: 1; transform: translateY(0) scale(1); }
+                    }
                 `}
             </style>
         </div>
