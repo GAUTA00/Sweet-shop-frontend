@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8080/api/v1';
+const BASE_URL = 'https://sweeet-shop-management-system.onrender.com/api/v1';
 
 export const fetchAllSweets = () => axios.get(`${BASE_URL}/getSweets`);
 
