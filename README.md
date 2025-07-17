@@ -22,19 +22,6 @@ A responsive and modern frontend application for managing sweets inventory — b
 
 ---
 
-## 📁 Folder Structure
-
-src/
-├── api/ # Axios API service functions
-├── components/ # Reusable UI components (Navbar, SweetCard, SearchBar, etc.)
-├── pages/ # Page components (Home, EditSweet, PurchaseSweet, RestockSweet,DeleteSweet)
-├── App.js # Main application routes
-└── index.js # React entry point
-
-
-
----
-
 ## 🛠️ Tech Stack
 
 - ⚛️ React
